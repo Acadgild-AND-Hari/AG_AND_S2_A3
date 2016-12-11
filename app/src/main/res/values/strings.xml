@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Login Screen</string>
+    <string name="str_email">E-mail</string>
+    <string name="str_password">Password</string>
+    <string name="str_login">LOGIN</string>
+    <string name="str_sign_up">Not a member? Sign up now.</string>
 </resources>
