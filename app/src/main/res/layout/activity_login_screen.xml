@@ -12,6 +12,7 @@
     tools:context="com.hari.aag.loginscreen.LoginScreenActivity">
 
     <EditText
+        android:id="@+id/id_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/str_email"
@@ -19,20 +20,23 @@
         android:layout_marginTop="@dimen/email_top_margin"/>
 
     <EditText
+        android:id="@+id/id_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textWebPassword"
         android:hint="@string/str_password" />
 
     <Button
+        android:id="@+id/id_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/str_login" />
 
     <TextView
+        android:id="@+id/id_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/str_sign_up"
         android:gravity="center"
-        android:paddingTop="@dimen/sign_up_top_margin"/>
+        android:paddingTop="@dimen/user_info_padding"
+        android:paddingBottom="@dimen/user_info_padding"/>
 </LinearLayout>
