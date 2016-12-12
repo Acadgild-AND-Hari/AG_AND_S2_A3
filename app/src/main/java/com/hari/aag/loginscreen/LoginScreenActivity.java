@@ -19,12 +19,9 @@ public class LoginScreenActivity extends AppCompatActivity
     private static final String LOG_TAG = LoginScreenActivity.class.getSimpleName();
     private static final String PREFS_NAME = LoginScreenActivity.class.getSimpleName();
 
-    private String emailStr, passwordStr;
     private boolean isLoggedInBool = false;
 
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String LOGIN = "isLoggedInBool";
+    private static final String IS_LOGGED_IN = "isLoggedInBool";
 
     @BindView(R.id.id_email) EditText emailET;
     @BindView(R.id.id_password) EditText passwordET;
@@ -56,10 +53,7 @@ public class LoginScreenActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.id_login:
-                if (isLoggedInBool) {
-                    emailStr = "";
-                    passwordStr = "";
-                } else {
+                if (!isLoggedInBool) {
                     String emailStr1 = emailET.getText().toString();
                     if (emailStr1.isEmpty()){
                         Toast.makeText(this, "Email is Empty!", Toast.LENGTH_SHORT).show();
@@ -67,21 +61,12 @@ public class LoginScreenActivity extends AppCompatActivity
                         break;
                     }
 
-                    String passwordStr1 = emailET.getText().toString();
+                    String passwordStr1 = passwordET.getText().toString();
                     if (passwordStr1.isEmpty()){
                         Toast.makeText(this, "Password is Empty!", Toast.LENGTH_SHORT).show();
                         Log.d(LOG_TAG, "Password is Empty!");
                         break;
                     }
-
-                    if ((!emailStr.isEmpty() && emailStr.equals(emailStr1)) ||
-                            (!passwordStr.isEmpty() && passwordStr.equals(passwordStr1))){
-                        Log.d(LOG_TAG, "Login Info same. Save Skipped!");
-                        break;
-                    }
-
-                    emailStr = emailStr1;
-                    passwordStr = passwordStr1;
                 }
 
                 isLoggedInBool = !isLoggedInBool;
@@ -106,8 +91,8 @@ public class LoginScreenActivity extends AppCompatActivity
             logInBtn.setText(R.string.str_logout);
             signUpTV.setText(R.string.str_hello);
         } else {
-            emailET.setText(emailStr);
-            passwordET.setText(passwordStr);
+            emailET.setText("");
+            passwordET.setText("");
 
             emailET.setVisibility(View.VISIBLE);
             passwordET.setVisibility(View.VISIBLE);
@@ -120,9 +105,7 @@ public class LoginScreenActivity extends AppCompatActivity
     private void readValuesFromPrefs(){
         SharedPreferences mySharedPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        emailStr = mySharedPrefs.getString(EMAIL, "");
-        passwordStr = mySharedPrefs.getString(PASSWORD, "");
-        isLoggedInBool = mySharedPrefs.getBoolean(LOG_TAG, false);
+        isLoggedInBool = mySharedPrefs.getBoolean(IS_LOGGED_IN, false);
 
         Log.d(LOG_TAG, "Values Read from Prefs.");
         dumpPrefValues();
@@ -131,9 +114,7 @@ public class LoginScreenActivity extends AppCompatActivity
     private void saveValuesToPrefs(){
         SharedPreferences.Editor prefsEditor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
 
-        prefsEditor.putString(EMAIL, emailStr);
-        prefsEditor.putString(PASSWORD, passwordStr);
-        prefsEditor.putBoolean(LOG_TAG, isLoggedInBool);
+        prefsEditor.putBoolean(IS_LOGGED_IN, isLoggedInBool);
         prefsEditor.commit();
 
         Log.d(LOG_TAG, "Values Saved to Prefs.");
@@ -141,9 +122,6 @@ public class LoginScreenActivity extends AppCompatActivity
     }
 
     private void dumpPrefValues(){
-        Log.d(LOG_TAG, EMAIL + " - " + emailStr);
-        Log.d(LOG_TAG, PASSWORD + " - " + passwordStr);
-        Log.d(LOG_TAG, LOGIN + " - " + isLoggedInBool);
+        Log.d(LOG_TAG, IS_LOGGED_IN + " - " + isLoggedInBool);
     }
-
 }
