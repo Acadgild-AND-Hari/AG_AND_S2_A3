@@ -19,8 +19,11 @@ public class LoginScreenActivity extends AppCompatActivity
     private static final String LOG_TAG = LoginScreenActivity.class.getSimpleName();
     private static final String PREFS_NAME = LoginScreenActivity.class.getSimpleName();
 
+    private String emailStr, passwordStr;
     private boolean isLoggedInBool = false;
 
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
     private static final String IS_LOGGED_IN = "isLoggedInBool";
 
     @BindView(R.id.id_email) EditText emailET;
@@ -46,6 +49,8 @@ public class LoginScreenActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         Log.d(LOG_TAG, "Inside - onPause");
+        emailStr = emailET.getText().toString();
+        passwordStr = passwordET.getText().toString();
         saveValuesToPrefs();
     }
 
@@ -69,6 +74,8 @@ public class LoginScreenActivity extends AppCompatActivity
                     }
                 }
 
+                emailStr = "";
+                passwordStr = "";
                 isLoggedInBool = !isLoggedInBool;
                 saveValuesToPrefs();
                 updateValueToUI();
@@ -91,20 +98,21 @@ public class LoginScreenActivity extends AppCompatActivity
             logInBtn.setText(R.string.str_logout);
             signUpTV.setText(R.string.str_hello);
         } else {
-            emailET.setText("");
-            passwordET.setText("");
-
             emailET.setVisibility(View.VISIBLE);
             passwordET.setVisibility(View.VISIBLE);
 
             logInBtn.setText(R.string.str_login);
             signUpTV.setText(R.string.str_sign_up);
         }
+        emailET.setText(emailStr);
+        passwordET.setText(passwordStr);
     }
 
     private void readValuesFromPrefs(){
         SharedPreferences mySharedPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
+        emailStr = mySharedPrefs.getString(EMAIL, "");
+        passwordStr = mySharedPrefs.getString(PASSWORD, "");
         isLoggedInBool = mySharedPrefs.getBoolean(IS_LOGGED_IN, false);
 
         Log.d(LOG_TAG, "Values Read from Prefs.");
@@ -114,6 +122,8 @@ public class LoginScreenActivity extends AppCompatActivity
     private void saveValuesToPrefs(){
         SharedPreferences.Editor prefsEditor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
 
+        prefsEditor.putString(EMAIL, emailStr);
+        prefsEditor.putString(PASSWORD, passwordStr);
         prefsEditor.putBoolean(IS_LOGGED_IN, isLoggedInBool);
         prefsEditor.commit();
 
@@ -122,6 +132,8 @@ public class LoginScreenActivity extends AppCompatActivity
     }
 
     private void dumpPrefValues(){
+        Log.d(LOG_TAG, EMAIL + " - " + emailStr);
+        Log.d(LOG_TAG, PASSWORD + " - " + passwordStr);
         Log.d(LOG_TAG, IS_LOGGED_IN + " - " + isLoggedInBool);
     }
 }
